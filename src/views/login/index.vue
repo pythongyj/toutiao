@@ -4,19 +4,19 @@
       <div class="logo">
         <img src="..//../assets/img/logo_index.png" alt />
       </div>
-      <el-form>
-        <el-form-item>
+      <el-form ref="myform" :model="formData" :rules="rules">
+        <el-form-item prop="phone">
           <el-input v-model="formData.phone" placeholder="请输入您的手机号"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="code">
           <el-input v-model="formData.code" class="loginCode" placeholder="请输入您的验证码"></el-input>
           <el-button class="loginGetCode" plain>获取验证码</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="reads">
           <el-checkbox v-model="formData.reads">我已阅读并同意用户协议和隐私条款</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" class="submint">登录</el-button>
+          <el-button type="primary" @click="login" class="submint">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -26,12 +26,40 @@
 <script>
 export default {
   data () {
+    let validator = function (rules, value, callback) {
+      value
+        ? callback()
+        : callback(new Error('您必须阅读并同意用户协议和隐私条款才能登录'))
+    }
     return {
       formData: {
         phone: '',
         code: '',
-        reads: true
+        reads: false
+      },
+      rules: {
+        phone: [
+          { required: true, message: '请输入您的手机号码' },
+          {
+            pattern: /^1[3456789]\d{9}$/,
+            message: '手机号码不合法，请重新输入'
+          }
+        ],
+        code: [
+          { required: true, message: '请输入您的验证码' },
+          { pattern: /^\d{6}$/, message: '验证码不合法，请重新输入' }
+        ],
+        reads: [{ validator }]
       }
+    }
+  },
+  methods: {
+    login () {
+      this.$refs.myform.validate(isOK => {
+        if (isOK) {
+          console.log('验证成功，开始请求后台数据')
+        }
+      })
     }
   }
 }
@@ -40,6 +68,7 @@ export default {
 <style lang='less' scope>
 .loginImg {
   background-image: url("../../assets/img/login_bg.jpg");
+  background-size: cover;
   height: 100vh;
   display: flex;
   justify-content: center;
