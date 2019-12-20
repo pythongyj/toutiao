@@ -3,17 +3,50 @@ import VueRouter from 'vue-router'
 import Home from '../views/home'
 import Login from '../views/login'
 
+import Content from '../views/home/content'
+import Publish from '../views/home/publish.vue'
+import Articles from '../views/home/articles.vue'
+import Comment from '../views/home/comment.vue'
+import Material from '../views/home/material.vue'
+import Fans from '../views/home/fans.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: '/Login'
+    redirect: '/login'
   },
   {
     path: '/home',
     name: 'home',
-    component: Home
+    component: Home,
+    children: [
+      {
+        path: '',
+        component: Content
+      },
+      {
+        path: '/home/publish',
+        component: Publish
+      },
+      {
+        path: '/home/articles',
+        component: Articles
+      },
+      {
+        path: '/home/comment',
+        component: Comment
+      },
+      {
+        path: '/home/material',
+        component: Material
+      },
+      {
+        path: '/home/fans',
+        component: Fans
+      }
+    ]
   },
   {
     path: '/login',
@@ -32,6 +65,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  linkActiveClass: 'active',
   routes
 })
 

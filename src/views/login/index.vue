@@ -5,8 +5,8 @@
         <img src="..//../assets/img/logo_index.png" alt />
       </div>
       <el-form ref="myform" :model="formData" :rules="rules">
-        <el-form-item prop="phone">
-          <el-input v-model="formData.phone" placeholder="请输入您的手机号"></el-input>
+        <el-form-item prop="mobile">
+          <el-input v-model="formData.mobile" placeholder="请输入您的手机号"></el-input>
         </el-form-item>
         <el-form-item prop="code">
           <el-input v-model="formData.code" class="loginCode" placeholder="请输入您的验证码"></el-input>
@@ -33,12 +33,12 @@ export default {
     }
     return {
       formData: {
-        phone: '',
+        mobile: '',
         code: '',
         reads: false
       },
       rules: {
-        phone: [
+        mobile: [
           { required: true, message: '请输入您的手机号码' },
           {
             pattern: /^1[3456789]\d{9}$/,
@@ -57,7 +57,24 @@ export default {
     login () {
       this.$refs.myform.validate(isOK => {
         if (isOK) {
-          console.log('验证成功，开始请求后台数据')
+          this.$axios({
+            url: '/authorizations',
+            method: 'post',
+            data: this.formData
+          })
+            .then(result => {
+              // console.log('验证成功，开始请求后台数据', result.data.data.token)
+              window.localStorage.setItem(
+                'user-token', result.data.data.token
+              )
+              this.$router.push({ path: '/home' })
+            })
+            .catch(() => {
+              this.$message({
+                message: '手机号或验证码错误',
+                type: 'warning'
+              })
+            })
         }
       })
     }
@@ -65,7 +82,7 @@ export default {
 }
 </script>
 
-<style lang='less' scope>
+<style lang='less' scoped>
 .loginImg {
   background-image: url("../../assets/img/login_bg.jpg");
   background-size: cover;
