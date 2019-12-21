@@ -65,7 +65,7 @@ export default {
             .then(result => {
               // console.log('验证成功，开始请求后台数据', result.data.data.token)
               window.localStorage.setItem(
-                'user-token', result.data.data.token
+                'user-token', result.data.token
               )
               this.$router.push({ path: '/home' })
             })
