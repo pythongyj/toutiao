@@ -1,16 +1,18 @@
 <template>
   <el-container>
-    <el-aside width='200px'>
+    <el-aside width="200px">
       <home-aside></home-aside>
     </el-aside>
     <el-container>
-      <el-header>
-        <home-header></home-header>
-      </el-header>
-      <el-main>
-        <!-- 耳机路由容器 -->
-        <router-view></router-view>
-      </el-main>
+      <div class="scrolls">
+        <el-header>
+          <home-header></home-header>
+        </el-header>
+        <el-main>
+          <!-- 二级路由容器 -->
+          <router-view></router-view>
+        </el-main>
+      </div>
     </el-container>
   </el-container>
 </template>
@@ -28,8 +30,13 @@ export default {
 
 <style lang='less' scoped>
 .el-aside {
-    background-color:#353b4e;
-    text-align: center;
-    height: 100vh;
-  }
+  background-color: #353b4e;
+  text-align: center;
+  height: 100vh;
+}
+.scrolls {
+  overflow-y: scroll;
+  width: 100%;
+  height: 100vh;
+}
 </style>
