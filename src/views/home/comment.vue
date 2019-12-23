@@ -13,7 +13,10 @@
       <el-table-column label="操作">
         <template slot-scope="obj">
           <el-button type="text">修改</el-button>
-          <el-button type="text" @click='openOrclose(obj.row)'>{{ obj.row.comment_status?'关闭':'打开' }}评论</el-button>
+          <el-button
+            type="text"
+            @click="openOrclose(obj.row)"
+          >{{ obj.row.comment_status?'关闭':'打开' }}评论</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -34,7 +37,7 @@ export default {
         params: { response_type: 'comment' }
       }).then(result => {
         this.list = result.data.results
-        console.log(result)
+        // console.log(result)
       })
     },
     zhuangtai (row, column, cellValue, index) {
@@ -46,9 +49,10 @@ export default {
         this.$axios({
           method: 'put',
           url: '/comments/status',
-          params: { article_id: row.id },
-          data: { allow_comment: !row.allow_comment }
+          params: { article_id: row.id.toString() },
+          data: { allow_comment: !row.comment_status }
         }).then(result => {
+          console.log(result)
           this.getData()
         })
       })
