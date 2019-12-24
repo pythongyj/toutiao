@@ -27,7 +27,7 @@ axios.interceptors.request.use(function (config) {
  */
 axios.defaults.transformResponse = [function (data) {
   // debugger
-  return JsonBig.parse(data)
+  return data ? JsonBig.parse(data) : null
 }]
 
 /**
