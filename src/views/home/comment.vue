@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <bread slot="header">
       <template slot="title">
         <div>评论列表</div>
@@ -20,6 +20,14 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-row type="flex" justify="center" class="pageRow" align="middle">
+      <el-pagination background
+      layout="prev, pager, next"
+      :page-size="pages.pageSize"
+      :current-page="pages.currentPage"
+      @current-change="changePage"
+      :total="pages.total"></el-pagination>
+    </el-row>
   </el-card>
 </template>
 
@@ -27,18 +35,34 @@
 export default {
   data () {
     return {
-      list: []
+      list: [],
+      pages: {// 分页默认数据
+        pageSize: 10, // 每页多少条
+        total: 0, // 总页数
+        currentPage: 1// 当前页数
+      },
+      loading: false// 加载进度
     }
   },
   methods: {
-    getData () {
-      this.$axios({
+    async getData () {
+      this.loading = true
+      await this.$axios({
         url: '/articles',
-        params: { response_type: 'comment' }
+        params: { response_type: 'comment', page: this.pages.currentPage, per_page: this.pages.pageSize }
       }).then(result => {
+        this.loading = false
         this.list = result.data.results
-        // console.log(result)
+        console.log(result)
+        this.pages.pageSize = result.data.per_page
+        this.pages.total = result.data.total_count
+        this.pages.currentPage = result.data.page
       })
+    },
+    // 页码改变事件
+    changePage (newPage) {
+      this.pages.currentPage = newPage
+      this.getData()
     },
     zhuangtai (row, column, cellValue, index) {
       return cellValue ? '正常' : '关闭'
@@ -64,5 +88,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+.pageRow{
+  height: 60px;
+}
 </style>
