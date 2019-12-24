@@ -5,9 +5,8 @@ import Login from '../views/login'
 
 import Content from '../views/home/content'
 import Publish from '../views/home/publish.vue'
-import Articles from '../views/home/articles.vue'
+// import Articles from '../views/home/articles.vue'
 import Comment from '../views/home/comment.vue'
-import Material from '../views/home/material.vue'
 import Fans from '../views/home/fans.vue'
 
 Vue.use(VueRouter)
@@ -32,7 +31,9 @@ const routes = [
       },
       {
         path: '/home/articles',
-        component: Articles
+        // component: Articles
+        // 按需加载
+        component: () => import('../views/home/articles.vue')
       },
       {
         path: '/home/comment',
@@ -40,7 +41,8 @@ const routes = [
       },
       {
         path: '/home/material',
-        component: Material
+        // component: Material
+        component: () => import('../views/home/material.vue')
       },
       {
         path: '/home/fans',
