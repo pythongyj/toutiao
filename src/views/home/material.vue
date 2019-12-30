@@ -77,7 +77,7 @@ export default {
     getMaterial () {
       // let collect =
       this.$axios({
-        url: 'user/images',
+        url: '/user/images',
         params: {
           collect: this.activeName === 'collect',
           page: this.page.page,

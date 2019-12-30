@@ -36,7 +36,7 @@
     <el-card class="bottomCard">
       <el-row class="bottomList">
         共找到
-        <span>62221</span> 条符合条件的内容
+        <span> {{page.total_count}} </span> 条符合条件的内容
       </el-row>
       <el-row
         v-for="item in listArticles"
@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="right">
-          <i class="el-icon-edit">修改</i>
+          <i class="el-icon-edit" @click="editItem(item.id)">修改</i>
           <i @click="delectItem(item.id)" class="el-icon-delete">删除</i>
         </div>
       </el-row>
@@ -92,6 +92,10 @@ export default {
     }
   },
   methods: {
+    // 修改文章
+    editItem (id) {
+      this.$router.push(`/home/publish/${id.toString()}`)
+    },
     getArticles (params) {
       // let status = null
       this.$axios({
@@ -135,6 +139,7 @@ export default {
     },
     delectItem (id) {
       // this.searchForm.status = item.status
+
       this.$axios({
         url: `/articles/${id.toString()}`,
         method: 'delete'

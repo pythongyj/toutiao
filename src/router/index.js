@@ -4,7 +4,7 @@ import Home from '../views/home'
 import Login from '../views/login'
 
 import Content from '../views/home/content'
-import Publish from '../views/home/publish.vue'
+// import Publish from '../views/home/publish.vue'
 // import Articles from '../views/home/articles.vue'
 import Comment from '../views/home/comment.vue'
 import Fans from '../views/home/fans.vue'
@@ -27,7 +27,11 @@ const routes = [
       },
       {
         path: '/home/publish',
-        component: Publish
+        component: () => import('../views/home/publish.vue')
+      },
+      {
+        path: '/home/publish/:id',
+        component: () => import('../views/home/publish.vue')
       },
       {
         path: '/home/articles',
