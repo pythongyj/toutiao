@@ -51,6 +51,10 @@ const routes = [
       {
         path: '/home/fans',
         component: Fans
+      },
+      {
+        path: '/home/account',
+        component: () => import('../views/home/account.vue')
       }
     ]
   },

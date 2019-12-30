@@ -10,7 +10,7 @@
         <el-dropdown @command="clickList">
           <span>{{userInfo.name}}</span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="userinfo">个人信息</el-dropdown-item>
+            <el-dropdown-item command="account">个人信息</el-dropdown-item>
             <el-dropdown-item command="git">github</el-dropdown-item>
             <el-dropdown-item command="goBack">退出</el-dropdown-item>
           </el-dropdown-menu>
@@ -31,8 +31,16 @@ export default {
   methods: {
     goBack () {},
     clickList (command) {
-      if (command === 'userinfo') {
-
+      if (command === 'account') {
+        console.log()
+        if (this.$route.path === '/home/account') {
+          this.$message({
+            type: 'warning',
+            message: '现在已经在个人信息页面了'
+          })
+        } else {
+          this.$router.push('/home/account')
+        }
       } else if (command === 'git') {
         window.location.href = 'https://github.com/pythongyj/toutiao'
       } else if (command === 'goBack') {
