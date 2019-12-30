@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/bus/eventBus'
 export default {
   data () {
     return {
@@ -67,7 +68,7 @@ export default {
               type: 'success',
               message: '修改成功'
             })
-            this.getProfile()
+            eventBus.$emit('uploadUserInfo')
           })
         }
       })
