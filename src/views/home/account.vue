@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card v-loading='loading'>
     <bread slot="header">
       <template slot="title">账户信息</template>
     </bread>
@@ -32,6 +32,7 @@
 export default {
   data () {
     return {
+      loading: false,
       defaultImg: require('../../assets/img/login_bg3.jpg'),
       formData: {
         name: '',
@@ -71,13 +72,24 @@ export default {
         }
       })
     },
-    uploadImg () {},
+    uploadImg (params) {
+      this.loading = true
+      let data = new FormData()
+      data.append('photo', params.file)
+      this.$axios({
+        url: '/user/photo',
+        method: 'PATCH',
+        data
+      }).then(result => {
+        this.loading = false
+        this.formData.photo = result.data.photo
+      })
+    },
     getProfile () {
       this.$axios({
         url: '/user/profile'
       }).then(result => {
         this.formData = result.data
-        console.log(this.formData)
       })
     }
   },
