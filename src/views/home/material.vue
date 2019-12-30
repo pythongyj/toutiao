@@ -1,6 +1,6 @@
 <template>
   <!-- <div>素材管理模块</div> -->
-  <el-card  v-loading="loading" >
+  <el-card v-loading="loading">
     <!-- 面包屑 -->
     <bread slot="header">
       <template slot="title">素材管理</template>
@@ -11,8 +11,8 @@
         <el-tab-pane name="all" label="全部">
           <!-- 列表项 -->
           <div class="imgList">
-            <el-card class="cardItem" v-for="item in list" :key="item.id">
-              <img :src="item.url" />
+            <el-card class="cardItem" v-for="(item,index) in list" :key="item.id">
+              <img @click="openDialog(index)" :src="item.url" />
               <el-row type="flex" justify="space-between" align="middle" class="itenIcom">
                 <i
                   @click="quxiaoOrShoucang(item)"
@@ -27,13 +27,13 @@
         <el-tab-pane name="collect" label="收藏">
           <!-- 列表项 -->
           <div class="imgList">
-            <el-card class="cardItem" v-for="item in list" :key="item.id">
-              <img :src="item.url" />
+            <el-card class="cardItem" v-for="(item,index) in list" :key="item.id">
+              <img @click="openDialog(index)" :src="item.url" />
             </el-card>
           </div>
         </el-tab-pane>
       </el-tabs>
-      <el-upload action="" :show-file-list="false" :http-request='uploadImg' class="uplodeBtn" >
+      <el-upload action :show-file-list="false" :http-request="uploadImg" class="uplodeBtn">
         <el-button type="primary">上传图片</el-button>
       </el-upload>
     </div>
@@ -47,6 +47,14 @@
         :total="page.total_count"
       ></el-pagination>
     </el-row>
+
+    <el-dialog @opened='openEnd' title="提示" :visible.sync="dialogVisible" width="70%">
+      <el-carousel ref="myImg" height="400px" :interval="4000" type="card">
+        <el-carousel-item v-for="(item,index) in list" :key="index">
+          <img :src="item.url" alt />
+        </el-carousel-item>
+      </el-carousel>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -54,6 +62,8 @@
 export default {
   data () {
     return {
+      dialogVisible: false,
+      dialogIndex: -1,
       activeName: 'all',
       list: [],
       page: {
@@ -65,6 +75,14 @@ export default {
     }
   },
   methods: {
+    // 打开走马灯弹窗
+    openDialog (index) {
+      this.dialogVisible = true
+      this.dialogIndex = index
+    },
+    openEnd () {
+      this.$refs.myImg.setActiveItem(this.dialogIndex)
+    },
     // 切换页签时的事件
     selectItem () {
       this.getMaterial()
